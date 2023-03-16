@@ -1,0 +1,33 @@
+version: '3.4'
+
+services:
+  dentaloffice.api:
+    image: ${DOCKER_REGISTRY-}dentalofficeapi
+    environment:
+        ConnectionStrings__MyDatabase: "Server=dbdental;Port=5433;Database=db_dentaloffic;User Id=postgres;Password=postgres;"
+    build:
+      context: .
+      dockerfile: DentalOffice.API\Dockerfile
+    depends_on:
+        - dentaldb
+    #networks:
+    #    - backend
+  dentaldb:
+    image: postgres
+    container_name: dentaldb
+    ports:
+        - "5433:5433" 
+    environment: 
+        - PGDATA=/var/lib/postgresql/data/pgdata
+        - POSTGRES_DB=dentaldb 
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=postgres
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    #networks:
+    #    - backend
+volumes:
+  dbdata:
+#networks:
+#    backend:
+#        driver: bridge
