@@ -32,10 +32,10 @@ namespace DentalOffice.Repositories.Services
                 DentistFullName = r.Dentist.FirstName + " " + r.Dentist.LastName
             }).AsQueryable();
 
-            if (searchRequest.UserId is not null)
+            if (searchRequest.UserId is not null && searchRequest.UserId is not 0)
                 ratings = ratings.Where(r => r.UserId == searchRequest.UserId);
 
-            if (searchRequest.DentistId is not null)
+            if (searchRequest.DentistId is not null && searchRequest.DentistId is not 0)
                 ratings = ratings.Where(r => r.DentistId == searchRequest.DentistId);
 
             return _mapper.Map<List<RatingDto>>(await ratings.ToListAsync());

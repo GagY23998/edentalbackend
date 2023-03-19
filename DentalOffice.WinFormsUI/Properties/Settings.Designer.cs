@@ -25,7 +25,7 @@ namespace DentalOffice.WinFormsUI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://localhost:7169/api")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://localhost:62920/api")]
         public string APIurl {
             get {
                 return ((string)(this["APIurl"]));

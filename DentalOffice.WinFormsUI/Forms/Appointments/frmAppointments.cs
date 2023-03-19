@@ -1,6 +1,8 @@
 ﻿using DentalOffice.Dtos;
 using DentalOffice.Dtos.SearchRequests;
 using DentalOffice.WinFormsUI.APIServices;
+using DocumentFormat.OpenXml.EMMA;
+using System.Net;
 
 namespace DentalOffice.WinFormsUI.Forms.Appointments
 {
@@ -23,9 +25,9 @@ namespace DentalOffice.WinFormsUI.Forms.Appointments
             {
                 Start = dtPicStart.Value.ToUniversalTime(),
                 End = dtPicEnd.Value.ToUniversalTime(),
-                DentistId = comboBoxHelper.GetIdFromComboBox(cmbDentists.ValueMember),
-                TreatmentId = comboBoxHelper.GetIdFromComboBox(cmbTreatments.ValueMember),
-                UserId = comboBoxHelper.GetIdFromComboBox(cmbClients.ValueMember)
+                DentistId = comboBoxHelper.GetIdFromComboBox(cmbDentists.SelectedValue),
+                TreatmentId = comboBoxHelper.GetIdFromComboBox(cmbTreatments.SelectedValue),
+                UserId = comboBoxHelper.GetIdFromComboBox(cmbClients.SelectedValue)
             };
 
             dgvAppointments.AutoGenerateColumns = false;
@@ -34,7 +36,9 @@ namespace DentalOffice.WinFormsUI.Forms.Appointments
 
         private async Task LoadTreatments()
         {
-            cmbTreatments.DataSource = await _treatmentApiService.GetAll<List<TreatmentDto>>();
+            var treatments = await _treatmentApiService.GetAll<List<TreatmentDto>>();
+            treatments.Insert(0, new TreatmentDto());
+            cmbTreatments.DataSource = treatments;
             cmbTreatments.DisplayMember = "Name";
             cmbTreatments.ValueMember = "Id";
 
@@ -54,14 +58,18 @@ namespace DentalOffice.WinFormsUI.Forms.Appointments
                 Role = Enums.Role.Client
             };
 
-            cmbClients.DataSource = await _userApiService.GetFilteredData<List<UserDto>>(searchRequest);
+            var users = await _userApiService.GetFilteredData<List<UserDto>>(searchRequest);
+            users.Insert(0, new UserDto());
+            cmbClients.DataSource = users;
             cmbClients.DisplayMember = "FullName";
             cmbClients.ValueMember = "Id";
         }
 
         private async Task LoadDentists()
         {
-            cmbDentists.DataSource = await _dentistApiService.GetAll<List<DentistDto>>();
+            var dentists = await _dentistApiService.GetAll<List<DentistDto>>();
+            dentists.Insert(0, new DentistDto());
+            cmbDentists.DataSource = dentists;
             cmbDentists.DisplayMember = "FullName";
             cmbDentists.ValueMember = "Id";
 

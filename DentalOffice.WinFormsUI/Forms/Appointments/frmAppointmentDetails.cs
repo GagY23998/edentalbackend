@@ -30,7 +30,7 @@ namespace DentalOffice.WinFormsUI.Forms.Appointments
                 UserId = comboBoxHelper.GetIdFromComboBox(cmbClients.SelectedValue)
             };
 
-            var pickedTreatment = await _treatmentApiService.GetById<TreatmentDto>(_request.TreatmentId);
+            var pickedTreatment = await _treatmentApiService.GetById<TreatmentDto>(_request.TreatmentId.Value);
             if(pickedTreatment is not null)
             {
                 _request.End = _request.Start.AddMinutes(double.Parse(pickedTreatment.TimeRequiredInMinutes.ToString())).ToUniversalTime();

@@ -39,13 +39,13 @@ namespace DentalOffice.Repositories.Services
             if (searchRequest.End is not null)
                 appointments = appointments.Where(a => a.End <= searchRequest.End);
 
-            if (searchRequest.DentistId is not null)
+            if (searchRequest.DentistId is not null && searchRequest.DentistId is not 0)
                 appointments = appointments.Where(a => a.DentistId == searchRequest.DentistId);
-
-            if (searchRequest.TreatmentId is not null)
+            // UPALI MIKROFON da vidim di se pali
+            if (searchRequest.TreatmentId is not null && searchRequest.TreatmentId is not 0)
                 appointments = appointments.Where(a => a.TreatmentId == searchRequest.TreatmentId);
 
-            if (searchRequest.UserId is not null)
+            if (searchRequest.UserId is not null && searchRequest.UserId is not 0)
                 appointments = appointments.Where(a => a.UserId == searchRequest.UserId);
 
             return _mapper.Map<List<AppointmentDto>>(await appointments.ToListAsync());

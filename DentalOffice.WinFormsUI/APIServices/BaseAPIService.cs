@@ -51,7 +51,7 @@ namespace DentalOffice.WinFormsUI.APIServices
             return await url.WithBasicAuth(Username, Password).PostJsonAsync(search).ReceiveJson<T>();
         }
 
-        public async Task<T> GetById<T>(Tkey id)
+        public async Task<T> GetById<T>(Tkey? id)
         {
             try
             {

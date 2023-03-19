@@ -17,7 +17,7 @@ namespace DentalOffice.WinFormsUI.Forms.Report
             dgvMvpDentist.AutoGenerateColumns = false;
             List<ReportDto> reportData = new();
 
-            using (NpgsqlConnection conn = new NpgsqlConnection("Server=localhost;Database=db_dentaloffice;User Id=postgres;Password=postgres;"))
+            using (NpgsqlConnection conn = new NpgsqlConnection("Server=localhost;Port=5433;Database=dentaldb;User Id=postgres;Password=postgres;"))
             {
                 conn.Open();
                 NpgsqlCommand cmd = new NpgsqlCommand(@"SELECT d.""FirstName"" || ' ' || d.""LastName"" AS DentistFullName, ROUND(SUM(r.""Rate"") / COUNT(r.""DentistId""), 2) AS AverageRate
@@ -64,7 +64,7 @@ namespace DentalOffice.WinFormsUI.Forms.Report
 	                                              GROUP BY 1
 	                                              ORDER BY 2 DESC";
 
-                                NpgsqlConnection conn = new("Server=localhost;Database=db_dentaloffice;User Id=postgres;Password=postgres;");
+                                NpgsqlConnection conn = new("Server=localhost;Port=5433;Database=dentaldb;User Id=postgres;Password=postgres;");
                                 NpgsqlDataAdapter dataAdapter = new(query, conn);
                                 NpgsqlCommandBuilder commandBuilder = new(dataAdapter);
                                 DataSet ds = new DataSet();

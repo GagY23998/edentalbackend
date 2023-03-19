@@ -9,7 +9,7 @@ namespace DentalOffice.WinFormsUI.Forms.Payments
         private BaseAPIService<int, PaymentDto, PaymentSearchRequestDto> _apiService = new("payments");
         private BaseAPIService<int, UserDto, UserSearchRequestDto> _userApiService = new("users");
         private BaseAPIService<int, TreatmentDto, TreatmentSearchRequestDto> _treatmentApiService = new("treatments");
-
+        private ComboBoxHelper comboBoxHelper = new();
 
         public frmPayments()
         {
@@ -20,10 +20,9 @@ namespace DentalOffice.WinFormsUI.Forms.Payments
         {
             PaymentSearchRequestDto searchRequest = new()
             {
-                Date = dtPicPayment.Value,
                 CardNumber = txtCardNumber.Text,
-                UserId = int.Parse(cmbClients.ValueMember),
-                TreatmentId = int.Parse(cmbTreatments.ValueMember)
+                UserId = comboBoxHelper.GetIdFromComboBox(cmbClients.SelectedValue),
+                TreatmentId = comboBoxHelper.GetIdFromComboBox(cmbTreatments.SelectedValue)
             };
 
             dgvPayments.AutoGenerateColumns = false;
@@ -51,7 +50,9 @@ namespace DentalOffice.WinFormsUI.Forms.Payments
                 Role = Enums.Role.Client
             };
 
-            cmbClients.DataSource = await _userApiService.GetFilteredData<List<UserDto>>(searchRequest);
+            var clients = await _userApiService.GetFilteredData<List<UserDto>>(searchRequest);
+            clients.Insert(0, new UserDto());
+            cmbClients.DataSource = clients;
             cmbClients.DisplayMember = "FullName";
             cmbClients.ValueMember = "Id";
 
@@ -60,7 +61,9 @@ namespace DentalOffice.WinFormsUI.Forms.Payments
 
         private async Task LoadTreatments()
         {
-            cmbTreatments.DataSource = await _treatmentApiService.GetAll<List<TreatmentDto>>();
+            var treatements = await _treatmentApiService.GetAll<List<TreatmentDto>>();
+            treatements.Insert(0, new TreatmentDto());
+            cmbTreatments.DataSource = treatements;
             cmbTreatments.DisplayMember = "Name";
             cmbTreatments.ValueMember = "Id";
         }

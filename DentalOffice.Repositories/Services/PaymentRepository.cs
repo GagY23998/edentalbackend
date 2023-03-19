@@ -32,13 +32,11 @@ namespace DentalOffice.Repositories.Services
                 TreatmentName = p.Treatment.Name
             }).AsQueryable();
 
-            if (searchRequest.Date is not null)
-                payments = payments.Where(p => p.Date == searchRequest.Date);
 
-            if (searchRequest.TreatmentId is not null)
+            if (searchRequest.TreatmentId is not null && searchRequest.TreatmentId is not 0)
                 payments = payments.Where(p => p.TreatmentId == searchRequest.TreatmentId);
 
-            if (searchRequest.UserId is not null)
+            if (searchRequest.UserId is not null && searchRequest.UserId is not 0)
                 payments = payments.Where(p => p.UserId == searchRequest.UserId);
 
             if (!string.IsNullOrWhiteSpace(searchRequest.CardNumber))

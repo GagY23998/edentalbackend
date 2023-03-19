@@ -27,8 +27,8 @@ namespace DentalOffice.WinFormsUI.Forms.Ratings
         {
             RatingSearchRequestDto searchRequest = new()
             {
-                DentistId = comboBoxHelper.GetIdFromComboBox(cmbDentists.ValueMember),
-                UserId = comboBoxHelper.GetIdFromComboBox(cmbClients.ValueMember)
+                DentistId = comboBoxHelper.GetIdFromComboBox(cmbDentists.SelectedValue),
+                UserId = comboBoxHelper.GetIdFromComboBox(cmbClients.SelectedValue)
             };
 
             dgvRatings.AutoGenerateColumns = false;
@@ -48,14 +48,18 @@ namespace DentalOffice.WinFormsUI.Forms.Ratings
                 Role = Enums.Role.Client
             };
 
-            cmbClients.DataSource = await _userApiService.GetFilteredData<List<UserDto>>(searchRequest);
+            var clients = await _userApiService.GetFilteredData<List<UserDto>>(searchRequest);
+            clients.Insert(0, new UserDto());
+            cmbClients.DataSource = clients;
             cmbClients.DisplayMember = "FullName";
             cmbClients.ValueMember = "Id";
         }
 
         private async Task LoadDentists()
         {
-            cmbDentists.DataSource = await _dentistApiService.GetAll<List<DentistDto>>();
+            var dentists = await _dentistApiService.GetAll<List<DentistDto>>();
+            dentists.Insert(0, new DentistDto());
+            cmbDentists.DataSource = dentists;
             cmbDentists.DisplayMember = "FullName";
             cmbDentists.ValueMember = "Id";
 

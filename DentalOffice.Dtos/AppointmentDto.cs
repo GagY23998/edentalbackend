@@ -10,11 +10,11 @@ namespace DentalOffice.Dtos
         [Required]
         public DateTime End { get; set; }
         [Required]
-        public int DentistId { get; set; }
+        public int? DentistId { get; set; }
         [Required]
-        public int TreatmentId { get; set; }
+        public int? TreatmentId { get; set; }
         [Required]
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
         public string ClientFullName { get; set; }
         public string DentistFullName { get; set; }
         public string TreatmentName { get; set; }
